@@ -1,0 +1,88 @@
+{
+  "Aggregates": [
+    {
+      "UpstreamPathTemplate": "/api/detalle-articulo/{id}",
+      "RouteKeys": [ "articuloInventario", "producto" ],
+      "Aggregator" :"ArticuloDetailAggregator"
+    }
+  ],
+
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/api/inventario/articulo/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+
+      "DownstreamPathTemplate": "/api/articulo/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7147
+        }
+      ],
+      "Key": "articuloInventario"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/inventario/articulo",
+      "UpstreamHttpMethod": [ "POST" ],
+
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Permission_ADMIN_INVENTORY": "ADMIN_INVENTORY",
+        "Permission_ADMIN_USER": "ADMIN_USER"
+      },
+
+      "DownstreamPathTemplate": "/api/articulo",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7147
+        }
+      ],
+      "Key": "crearArticuloInventario"
+    },
+
+
+    {
+      "UpstreamPathTemplate": "/api/pedido/producto/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+
+      "DownstreamPathTemplate": "/api/producto/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44349
+        }
+      ],
+      "Key": "producto"
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/security/login",
+      "UpstreamHttpMethod": [ "POST" ],
+
+      "DownstreamPathTemplate": "/api/security/login",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7293
+        }
+      ],
+      "Key": "login"
+    }
+
+
+
+
+
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7265/"
+  }
+}
